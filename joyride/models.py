@@ -36,7 +36,9 @@ class JoyRideManager(models.Manager):
         kw = {'slug__exact': slug}
         if url_path is not None:
             kw.update({'url_path__regex': r'^%s$' % url_path})
-        obj = qs.get(**kw)
+        obj = qs.filter(**kw)
+        if obj:
+            obj = obj[0]
         if for_user and for_user.is_authenticated():
             objv = obj.views.filter(user__id=for_user.id)
             if objv:
